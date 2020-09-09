@@ -3,6 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
+const bodyparser = require('body-parser');
+
+//Body parser configuration
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
+
+
 
 //First route
 app.get('/', (req, res) => res.send('Hello world!'));
@@ -12,8 +19,8 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
 //Route for users , profile
-app.use('/app/users', users);
-app.use('/app/profile', profile);
+app.use('/api/users', users);
+app.use('/api/profile', profile);
 
 //DB config
 
