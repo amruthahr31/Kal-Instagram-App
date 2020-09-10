@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const bodyparser = require('body-parser');
-
+const passport = require('passport');
 //Body parser configuration
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -29,3 +29,6 @@ mongoose
   .connect(db)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
+
+  //Passport configuration
+app.use(passport.initialize());
