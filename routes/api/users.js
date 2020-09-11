@@ -6,11 +6,19 @@ const gravatar = require('gravatar');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
+const passport = require('passport');
+const validateRegisterInput = require('../../validation/register');
 
 // @route POST /api/users/register
 // @desc Register user
 // @access Public
 router.post('/register', (req, res) => {
+  const {errors,isValid} = validateRegisterInput(req.body);
+  if (!isValid)
+  {
+    return res.status(400).json(errors);
+    }
+
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
@@ -96,6 +104,17 @@ router.post('/login', (req, res) => {
     .catch();
 
 })
+
+// @route GET /api/users/current
+// @desc Return the current user
+// @access Private
+
+router.get('/current',
+  passport.authenticate('jwt', {session:false}),
+  (req, res) => {
+    return res.json(req.user);
+  }
+)
 
 
 module.exports = router;
